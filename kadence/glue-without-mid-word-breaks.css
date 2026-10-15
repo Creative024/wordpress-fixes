@@ -1,0 +1,31 @@
+/*
+ * Kadence theme: no-widow glue breaks words in half.
+ *
+ * Symptom: you glue the last two words of a heading with &nbsp; (or a nowrap span) so no
+ *          word sits alone on the last line, and the browser splits a word instead:
+ *          "Cutler|y".
+ * Cause:   the theme sets word-break: break-word on content text, which lets the browser
+ *          break inside a word when a glued pair does not fit.
+ * Fix:     normal word breaking, with overflow-wrap as the safety net for long URLs.
+ *          Give glue spans neutral styling so component CSS cannot restyle them.
+ *
+ * Also: Chrome may still break at the edge of a nowrap span that follows an &nbsp;.
+ *       Put the whole last word inside the span instead.
+ */
+.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4,
+.entry-content p, .entry-content li {
+	word-break: normal !important;
+	overflow-wrap: break-word;
+}
+
+.nw {
+	display: inline;
+	white-space: nowrap;
+	font: inherit;
+	color: inherit;
+	letter-spacing: inherit;
+	text-transform: inherit;
+	background: none;
+	padding: 0;
+	margin: 0;
+}
