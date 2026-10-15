@@ -1,0 +1,25 @@
+/*
+ * Gravity Forms + Cloudflare Turnstile: keep the challenge space, put Send beside it.
+ *
+ * Symptom: a ~74 px empty band above the Send button that looks like a layout bug.
+ * Cause:   it is the Turnstile field. Most visitors never see a challenge, but when
+ *          Cloudflare is unsure it renders "Verify you are human" in that band.
+ * Wrong:   height:0 / display:none / overflow:hidden on the band. That hides a required
+ *          challenge and silently blocks real inquiries.
+ * Right:   leave the band alone and move the footer (Send) into it, to the right of the
+ *          300 px challenge box, on cards wide enough for both.
+ *
+ * Needs :has() (all current browsers). Older browsers keep the default stacked layout.
+ */
+@media (min-width: 600px) {
+	.gform_wrapper form:has(.gfield--type-turnstile) {
+		position: relative;
+	}
+	.gform_wrapper form:has(.gfield--type-turnstile) .gform_footer {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		margin: 0;
+		padding: 0;
+	}
+}
